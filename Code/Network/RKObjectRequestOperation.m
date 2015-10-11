@@ -196,9 +196,12 @@ static void *RKOperationFinishDate = &RKOperationFinishDate;
     
     NSTimeInterval elapsedTime = [[NSDate date] timeIntervalSinceDate:objc_getAssociatedObject(operation, RKOperationStartDate)];
     
-    NSString *statusCodeString = RKStringFromStatusCode([operation.response statusCode]);
+	NSString *statusCodeString;
+	if (![operation.response isKindOfClass:[NSURLResponse class]]) {
+		statusCodeString = RKStringFromStatusCode([operation.response statusCode]);		
+	}
     NSString *elapsedTimeString = [NSString stringWithFormat:@"[%.04f s]", elapsedTime];
-    NSString *statusCodeAndElapsedTime = statusCodeString ? [NSString stringWithFormat:@"(%ld %@) %@", (long)[operation.response statusCode], statusCodeString, elapsedTimeString] : [NSString stringWithFormat:@"(%ld) %@", (long)[operation.response statusCode], elapsedTimeString];
+    NSString *statusCodeAndElapsedTime = statusCodeString ? [NSString stringWithFormat:@"(%ld %@) %@", (long)0, statusCodeString, elapsedTimeString] : [NSString stringWithFormat:@"(%ld) %@", (long)0, elapsedTimeString];
     if (operation.error) {
         if ((_RKlcl_component_level[(__RKlcl_log_symbol(RKlcl_cRestKitNetwork))]) >= (__RKlcl_log_symbol(RKlcl_vTrace))) {
             RKLogError(@"%@ '%@' %@:\nerror=%@\nresponse.body=%@", [operation.request HTTPMethod], [[operation.request URL] absoluteString], statusCodeAndElapsedTime, operation.error, operation.responseString);
@@ -211,7 +214,7 @@ static void *RKOperationFinishDate = &RKOperationFinishDate;
         }
     } else {
         if ((_RKlcl_component_level[(__RKlcl_log_symbol(RKlcl_cRestKitNetwork))]) >= (__RKlcl_log_symbol(RKlcl_vTrace))) {
-            RKLogTrace(@"%@ '%@' %@:\nresponse.headers=%@\nresponse.body=%@", [operation.request HTTPMethod], [[operation.request URL] absoluteString], statusCodeAndElapsedTime, [operation.response allHeaderFields], RKLogTruncateString(operation.responseString));
+            RKLogTrace(@"%@ '%@' %@:\nresponse.headers=%@\nresponse.body=%@", [operation.request HTTPMethod], [[operation.request URL] absoluteString], statusCodeAndElapsedTime, @"", RKLogTruncateString(operation.responseString));
         } else {
             RKLogInfo(@"%@ '%@' %@", [operation.request HTTPMethod], [[operation.request URL] absoluteString], statusCodeAndElapsedTime);
         }
