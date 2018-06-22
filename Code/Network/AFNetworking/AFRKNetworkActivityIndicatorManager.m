@@ -92,7 +92,7 @@ static NSTimeInterval const kAFRKNetworkActivityIndicatorInvisibilityDelay = 0.1
     return _activityCount > 0;
 }
 
-- (void)updateNetworkActivityIndicatorVisibility {
+- (void)updateNetworkActivityIndicatorVisibility NS_EXTENSION_UNAVAILABLE_IOS("Use view controller based solutions where appropriate instead.") {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:[self isNetworkActivityIndicatorVisible]];
 }
 
